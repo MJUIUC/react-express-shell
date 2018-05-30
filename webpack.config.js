@@ -18,7 +18,7 @@ const configuration = {
 
   output: {
     path: path.resolve(__dirname, 'react-app-build'),
-    filename: ''
+    filename: '[name].js'
   },
 
   context: path.resolve(__dirname, 'react-app-source'),
@@ -34,31 +34,20 @@ const configuration = {
       },
       {
         test: /\.less$/,
-        use: {
+        use: [{
+          loader: "style-loader"
+        },
+        {
+          loader: "css-loader"
+        },{
           loader: "less-loader"
-        } 
+        }] 
       },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader",
-            options: {
-              modules: true,
-              importLoaders: 1,
-              localIdentName: "[name]_[local]_[hash:base64]",
-              sourceMap: true,
-              minimize: true
-            }
-          }
-        ]
-      }
     ]
   },
-  plugins: [new HtmlWebPackPlugin()]
+  plugins: [new HtmlWebPackPlugin({
+    template: path.resolve(APP_DIR, 'index.html'),
+  })]
 };
 
 module.exports = configuration;
